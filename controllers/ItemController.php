@@ -8,6 +8,7 @@ use Yii;
 use yii\helpers\Html;
 use app\models\Item;
 use app\models\ItemSearch;
+use app\models\ItemQuery;
 use yii\data\ActiveDataProvider;
 use yii\data\ArrayDataProvider;
 use yii\helpers\ArrayHelper;
@@ -27,7 +28,8 @@ use app\components\helpers\AccessHelper;
  */
 class ItemController extends Controller
 {
-    public $pluginOptions;
+    public $categories;
+
     /**
      * {@inheritdoc}
      */
@@ -58,11 +60,19 @@ class ItemController extends Controller
                 ],
                 // specifies exception to throw when any of rules above are breached
                 'denyCallback' => function ($rule, $action) {
-                  throw new ForbiddenHttpException('Please login or create an account to access this page.');
+                    throw new ForbiddenHttpException('Please login or create an account to access this page.');
                 }
             ],
         ];
     }
+
+    public function init()
+    {
+        parent::init();
+        $this->categories = ArrayHelper::map(Category::find()->all(), 'id', 'name');
+
+    }
+
     /**
      * Lists all Item models.
      * @return mixed
@@ -71,12 +81,11 @@ class ItemController extends Controller
     {
         $searchModel = new ItemSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $categories = ArrayHelper::map(Category::find()->all(), 'id', 'name');
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'categories' => $categories,
+            'categories' => $this->categories,
         ]);
     }
 
@@ -129,47 +138,46 @@ class ItemController extends Controller
      */
     public function actionUpdate($id)
     {
-       $model = $this->findModel($id);
-       // checks if the current user is owner of item
-       if (AccessHelper::hasAccessToPost($model)) {
+        $model = $this->findModel($id);
+        // checks if the current user is owner of item
+        if (AccessHelper::hasAccessToPost($model)) {
             throw new \yii\web\HttpException(403, 'You do not have access to this post');
         }
-       list($initialPreview, $initialPreviewConfig) = $this->getInitialPreview($model->id);
-       $categories = ArrayHelper::map(Category::find()->all(), 'id', 'name');
-       $image = new Image();
+        list($initialPreview, $initialPreviewConfig) = $this->getInitialPreview($model->id);
+        $image = new Image();
         if (Yii::$app->request->isPost) {
+            // gets images uploaded
             $image->imageFiles = UploadedFile::getInstancesByName('imageFiles');
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                 if ($image !== false) {                    
-                    $model->unlink('images', $image, true);
-                    if ($image->upload($model)) {
-                        // file is uploaded successfully
-                        return $this->redirect(['view', 'id' => $model->id]);
-                    }
+                if ($image->upload($model)) {
+                    // file is uploaded successfully
+                    return $this->redirect(['view', 'id' => $model->id]);
                 }
             }
         }
         return $this->render('update', [
             'model' => $model,
-            'categories' => $categories,
+            'categories' => $this->categories,
             'initialPreview' => $initialPreview,
             'initialPreviewConfig' => $initialPreviewConfig
 
         ]);
     }
-     private function getInitialPreview($id) {
-            $images = Image::find()->where(['item_id'=>$id])->all();
-            $initialPreview = [];
-            $initialPreviewConfig = [];
-            foreach ($images as $key => $value) {
-                array_push($initialPreview, '/uploads/'.$value->path);
-                array_push($initialPreviewConfig, [
-                    'caption'=> $value->path,
-                    'width'  => '120px',
-                    'key' => $key,
-                ]);
-            }
-            return  [$initialPreview, $initialPreviewConfig];
+
+    private function getInitialPreview($id)
+    {
+        $images = Image::find()->where(['item_id' => $id])->all();
+        $initialPreview = [];
+        $initialPreviewConfig = [];
+        foreach ($images as $key => $value) {
+            array_push($initialPreview, '/uploads/' . $value->path);
+            array_push($initialPreviewConfig, [
+                'caption' => $value->path,
+                'width' => '120px',
+                'key' => $key,
+            ]);
+        }
+        return [$initialPreview, $initialPreviewConfig];
     }
 
     /**
@@ -182,7 +190,7 @@ class ItemController extends Controller
      * @throws \yii\db\StaleObjectException
      */
     public function actionDelete($id)
-    {   
+    {
         $model = $this->findModel($id);
         // checks if the current user is owner of item
         if (AccessHelper::hasAccessToPost($model)) {
@@ -198,11 +206,27 @@ class ItemController extends Controller
         $model = $this->findModel($id);
         foreach ($model->images as $key => $value) {
             if ($key == $deleteKey) {
-                $model->unlink('images',$value, true);
+                $model->unlink('images', $value, true);
             }
         }
-        // var_dump($model->images);die;
-        echo json_encode('Image removed.');
+        return true;
+    }
+
+    public function actionYourItems()
+    {
+        $searchModel = new ItemSearch();
+//        $dataProvider = Item::find()->owner()->all();
+//        var_dump($dataProvider);die;
+        $dataProvider = new ActiveDataProvider([
+            'query' => Item::find()->owner(),
+        ]);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'categories' => $this->categories,
+        ]);
+
     }
 
     /**

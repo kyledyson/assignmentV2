@@ -115,4 +115,20 @@ class Item extends ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAllForUser()
+    {
+        return $this->andWhere(['user_id' => Yii::$app->user->id]);
+
+    }
+
+
+    public static function find()
+    {
+        return new \app\models\ItemQuery(get_called_class());
+    }
+
 }

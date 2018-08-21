@@ -22,9 +22,10 @@ class m180725_083656_create_item_table extends Migration
             'category_id' => $this->integer()->notNull(),
             'title' => $this->string()->notNull(),
             'description' => $this->text()->notNull(),
-            'condition' => $this->string()->notNull(),
+            'condition' => $this->integer()->notNull(),
             'location' => $this->string()->notNull(),
             'price' => $this->double()->notNull(),
+            'status' => $this->integer()->notNull(),
             'created_at' => $this->integer(11),
             'updated_at' => $this->integer(11),
 
