@@ -1,8 +1,11 @@
 <?php
 
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\widgets\ActiveForm;
 use \yii\widgets\ListView;
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\ItemSearch */
@@ -11,18 +14,18 @@ use \yii\widgets\ListView;
 $this->title = 'Items';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<?= $this->render('_search', ['model' => $searchModel, 'categories' => $categories]) ?>
-<div class="item-index">
-    <h1><?= Html::encode($this->title) ?></h1>
-    <p>
-        <?= Html::a('Create Item', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-    <div class="row">
-       <?php
-            echo ListView::widget([
-                'dataProvider' => $dataProvider,
-                'itemView' => '_list_items',
-            ]);
+
+
+<?php Pjax::begin(); ?>
+<div class="filter_form">
+    <?= $this->render('_search', ['model' => $searchModel, 'categories' => $categories]) ?>
+</div>
+<div class="item-index col-md-9">
+        <?php
+        echo ListView::widget([
+            'dataProvider' => $dataProvider,
+            'itemView' => '_list_items',
+        ]);
         ?>
     </div>
-</div>
+<?php Pjax::end(); ?>

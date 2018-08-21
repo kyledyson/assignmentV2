@@ -13,13 +13,15 @@ use app\components\helpers\AccessHelper;
                 array_push($images, Html::img('@web/uploads/' . $image->path, ['alt' => 'some', 'class' => 'thing']));
             }
             echo yii\bootstrap\Carousel::widget(['items' => $images]);
+        } else {
+            echo 'This item has no images.';
         }
         ?>
         <div class="caption">
             <h3><?= $model->title ?></h3>
             <p><?= $model->description ?></p>
             <?= Html::a('View', ['view', 'id' => $model->id], [
-                'class' => 'btn btn-primary',
+                'class' => 'btn btn-default',
             ]) ?>
             <?php
             if (!AccessHelper::hasAccessToPost($model)) {
