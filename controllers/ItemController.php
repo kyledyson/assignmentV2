@@ -18,7 +18,9 @@ use yii\web\NotFoundHttpException;
 use yii\web\ForbiddenHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
-use Elasticsearch\ClientBuilder;
+
+
+use app\components\helpers\AccessHelper;
 
 /**
  * ItemController implements the CRUD actions for Item model.
@@ -46,12 +48,15 @@ class ItemController extends Controller
                         'allow' => true,
                         'actions' => ['index', 'view'],
                     ],
+                    // access control 
+                    // only authenticated users can access following actions
                     [
                         'allow' => true,
                         'actions' => ['create', 'update', 'delete'],
                         'roles' => ['@'],
                     ],
                 ],
+                // specifies exception to throw when any of rules above are breached
                 'denyCallback' => function ($rule, $action) {
                   throw new ForbiddenHttpException('Please login or create an account to access this page.');
                 }
@@ -125,6 +130,10 @@ class ItemController extends Controller
     public function actionUpdate($id)
     {
        $model = $this->findModel($id);
+       // checks if the current user is owner of item
+       if (AccessHelper::hasAccessToPost($model)) {
+            throw new \yii\web\HttpException(403, 'You do not have access to this post');
+        }
        list($initialPreview, $initialPreviewConfig) = $this->getInitialPreview($model->id);
        $categories = ArrayHelper::map(Category::find()->all(), 'id', 'name');
        $image = new Image();
@@ -152,7 +161,6 @@ class ItemController extends Controller
             $images = Image::find()->where(['item_id'=>$id])->all();
             $initialPreview = [];
             $initialPreviewConfig = [];
-
             foreach ($images as $key => $value) {
                 array_push($initialPreview, '/uploads/'.$value->path);
                 array_push($initialPreviewConfig, [
@@ -175,7 +183,12 @@ class ItemController extends Controller
      */
     public function actionDelete($id)
     {   
-        $model = $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        // checks if the current user is owner of item
+        if (AccessHelper::hasAccessToPost($model)) {
+            throw new \yii\web\HttpException(403, 'You do not have access to this post');
+        }
+        $model->delete();
         $this->redirect('index');
     }
 

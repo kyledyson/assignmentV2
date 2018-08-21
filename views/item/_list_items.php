@@ -15,7 +15,9 @@ use yii\helpers\Html;
             <div class="caption">
             <h3><?= $model->title ?></h3>
             <p><?= $model->description ?></p>
-            <p><a href="#" class="btn btn-primary" role="button">Add to Basket</a>
+             <?= Html::a('View', ['view', 'id' => $model->id], [
+            'class' => 'btn btn-primary',
+        ]) ?>
                 <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-default']) ?>
             </p>
         </div>
