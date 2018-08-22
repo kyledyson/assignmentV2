@@ -21,12 +21,13 @@ use yii\helpers\Url;
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'condition')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'condition')->dropDownList([0 => 'New', 1 => 'Old'], ['prompt' => 'Please select a condition']) ?>
 
-    <?= $form->field($model, 'location')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'location_id')->dropDownList($locations, ['prompt' => 'Please select a location']) ?>
 
     <?= $form->field($model, 'price')->textInput() ?>
-    <?php 
+    <?php
+    // if action is create display empty file input
     if (Yii::$app->controller->action->id === 'create') {
         echo '<label class="control-label">Add Attachments</label>';
         echo FileInput::widget([
@@ -34,6 +35,7 @@ use yii\helpers\Url;
             'attribute' => 'imageFiles[]',
             'options' => ['multiple' => true]
         ]);
+        // else display input with previews of uploaded images
         } else {
             echo FileInput::widget([
             'name' => 'imageFiles[]',

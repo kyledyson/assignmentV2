@@ -4,11 +4,13 @@ namespace app\controllers;
 
 use app\models\Category;
 use app\models\Image;
+use phpDocumentor\Reflection\Location;
 use Yii;
 use yii\helpers\Html;
 use app\models\Item;
 use app\models\ItemSearch;
 use app\models\ItemQuery;
+use app\models\Area;
 use yii\data\ActiveDataProvider;
 use yii\data\ArrayDataProvider;
 use yii\helpers\ArrayHelper;
@@ -29,6 +31,7 @@ use app\components\helpers\AccessHelper;
 class ItemController extends Controller
 {
     public $categories;
+    public $locations;
 
     /**
      * {@inheritdoc}
@@ -70,6 +73,7 @@ class ItemController extends Controller
     {
         parent::init();
         $this->categories = ArrayHelper::map(Category::find()->all(), 'id', 'name');
+        $this->locations = ArrayHelper::map(Area::find()->all(), 'id', 'county');
 
     }
 
@@ -86,6 +90,7 @@ class ItemController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'categories' => $this->categories,
+            'locations' => $this->locations,
         ]);
     }
 
@@ -111,9 +116,10 @@ class ItemController extends Controller
     {
         $model = new Item();
         $image = new Image();
-        $categories = ArrayHelper::map(Category::find()->all(), 'id', 'name');
         if (Yii::$app->request->isPost) {
+
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
                 $image->imageFiles = UploadedFile::getInstances($image, 'imageFiles');
                 if ($image->upload($model)) {
                     // file is uploaded successfully
@@ -123,7 +129,8 @@ class ItemController extends Controller
         }
         return $this->render('create', [
             'model' => $model,
-            'categories' => $categories,
+            'categories' => $this->categories,
+            'locations' => $this->locations,
             'image' => $image
 
         ]);
@@ -135,6 +142,7 @@ class ItemController extends Controller
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
+     * @throws \yii\web\HttpException
      */
     public function actionUpdate($id)
     {
@@ -158,6 +166,7 @@ class ItemController extends Controller
         return $this->render('update', [
             'model' => $model,
             'categories' => $this->categories,
+            'locations' => $this->locations,
             'initialPreview' => $initialPreview,
             'initialPreviewConfig' => $initialPreviewConfig
 
@@ -215,16 +224,14 @@ class ItemController extends Controller
     public function actionYourItems()
     {
         $searchModel = new ItemSearch();
-//        $dataProvider = Item::find()->owner()->all();
-//        var_dump($dataProvider);die;
         $dataProvider = new ActiveDataProvider([
             'query' => Item::find()->owner(),
         ]);
-
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'categories' => $this->categories,
+            'locations' => $this->locations,
         ]);
 
     }

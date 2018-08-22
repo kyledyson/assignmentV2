@@ -22,7 +22,8 @@ use yii\web\IdentityInterface;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
-    
+
+
     /**
      * {@inheritdoc}
      */
@@ -39,12 +40,20 @@ class User extends ActiveRecord implements IdentityInterface
             TimestampBehavior::className(),
         ];
     }
-    /**
-     * {@inheritdoc}
-     */
     public function rules()
     {
-        return [];
+        return [
+            ['email', 'trim'],
+            ['email', 'email'],
+            ['email', 'string', 'max' => 255],
+            ['email', 'unique', 'targetClass' => '\app\models\User', 'message' => 'This email address has already been taken.'],
+
+
+            ['postcode', 'string', 'max' => 8],
+
+            ['mobile_number', 'string', 'max' => 13]
+
+        ];
     }
     /**
      * {@inheritdoc}

@@ -16,7 +16,7 @@ use yii\behaviors\BlameableBehavior;
  */
 class Image extends \yii\db\ActiveRecord
 {
-
+    //property for holding uploaded files
     public $imageFiles;
 
     /**
@@ -31,7 +31,7 @@ class Image extends \yii\db\ActiveRecord
     {
         return [
             [['path'], 'required'],
-           [['path'], 'string', 'max' => 255],
+            [['path'], 'string', 'max' => 255],
             [['imageFiles'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg', 'maxFiles' => 4],
         ];
     }
@@ -41,11 +41,7 @@ class Image extends \yii\db\ActiveRecord
        $image = new Image();
        foreach ($this->imageFiles as $file) {
             $image->path = $file->baseName . '.' . $file->extension;
-            // if (Yii::$app->controller->action->id === 'create') {
             $model->link('images', $image);
-            // }else {
-            //     $model->unlink('images', $image);
-            // }
             $image->save();
             $file->saveAs('uploads/' . $file->baseName . '.' . $file->extension);
             $image = new Image();

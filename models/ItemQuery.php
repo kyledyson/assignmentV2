@@ -8,11 +8,11 @@ use Yii;
  */
 class ItemQuery extends \yii\db\ActiveQuery
 {
-    public function active()
+    public function forSale()
     {
-        return $this->andWhere('[[status]]=2');
+        return $this->andWhere('[[status]]=0');
     }
-    public function draft()
+    public function sold()
     {
         return $this->andWhere('[[status]]=1');
     }

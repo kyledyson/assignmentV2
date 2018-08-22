@@ -14,13 +14,11 @@ use yii\widgets\Pjax;
 $this->title = 'Items';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-
-
 <?php Pjax::begin(); ?>
 <div class="filter_form">
-    <?= $this->render('_search', ['model' => $searchModel, 'categories' => $categories]) ?>
+    <?= $this->render('_search', ['model' => $searchModel, 'categories' => $categories, 'locations' => $locations]) ?>
 </div>
-<div class="item-index col-md-9">
+<div class="item-index col-md-4">
         <?php
         echo ListView::widget([
             'dataProvider' => $dataProvider,

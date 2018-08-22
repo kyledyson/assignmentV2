@@ -45,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="caption">
                 <p><?= $model->description ?></p>
                 <p>£<?= $model->price ?></p>
-                <p><?= $model->location ?></p>
+                <p><?= $model->location->county ?></p>
                 </p>
             </div>
         </div>

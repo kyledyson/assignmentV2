@@ -20,12 +20,12 @@ class m180725_083656_create_item_table extends Migration
             'id' => $this->primaryKey(),
             'user_id' => $this->integer()->notNull(),
             'category_id' => $this->integer()->notNull(),
+            'location_id' => $this->integer()->notNull(),
             'title' => $this->string()->notNull(),
             'description' => $this->text()->notNull(),
             'condition' => $this->integer()->notNull(),
-            'location' => $this->string()->notNull(),
             'price' => $this->double()->notNull(),
-            'status' => $this->integer()->notNull(),
+            'status' => $this->integer()->notNull()->defaultValue(0),
             'created_at' => $this->integer(11),
             'updated_at' => $this->integer(11),
 
@@ -61,6 +61,23 @@ class m180725_083656_create_item_table extends Migration
             'item',
             'category_id',
             'category',
+            'id',
+            'CASCADE'
+        );
+
+        // creates index for column `location_id`
+        $this->createIndex(
+            'idx-item-location_id',
+            'item',
+            'user_id'
+        );
+
+        // add foreign key for table `user`
+        $this->addForeignKey(
+            'fk-item-location_id',
+            'item',
+            'location_id',
+            'location',
             'id',
             'CASCADE'
         );

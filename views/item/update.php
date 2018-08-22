@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = 'Update';
     <?= $this->render('_form', [
         'model' => $model,
         'categories' => $categories,
-        // 'image'      => $image,
+        'locations' => $locations,
         'initialPreview'      => $initialPreview,
         'initialPreviewConfig'      => $initialPreviewConfig
     ]) ?>

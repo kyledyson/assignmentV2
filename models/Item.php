@@ -8,7 +8,6 @@ use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
 use yii\helpers\VarDumper;
 use yii\web\UploadedFile;
-use Elasticsearch\ClientBuilder;
 
 /**
  * This is the model class for table "item".
@@ -19,7 +18,7 @@ use Elasticsearch\ClientBuilder;
  * @property string $title
  * @property string $description
  * @property string $condition
- * @property string $location
+ * @property string $location_id
  * @property string $mobile_number
  * @property string $image_path
  * @property double $price
@@ -31,6 +30,13 @@ use Elasticsearch\ClientBuilder;
  */
 class Item extends ActiveRecord
 {
+
+    const STATUS_FOR_SALE = 0;
+    const STATUS_SOLD = 1;
+
+    const STATUS_NEW = 0;
+    const STATUS_OLD = 1;
+
     /**
      * {@inheritdoc}
      */
@@ -46,12 +52,16 @@ class Item extends ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'description', 'condition', 'price', 'location'], 'required'],
-            [['created_at', 'updated_at'], 'integer'],
+            [['title', 'description', 'condition', 'price', 'location_id'], 'required'],
+            [['location_id', 'status', 'created_at', 'updated_at'], 'integer'],
+            [['created_at'], 'safe'],
             [['description'], 'string'],
             [['price'], 'number'],
+            [['status'], 'in', 'range' => [0, 1]],
+            [['condition'], 'in', 'range' => [0, 1]],
             [['title', 'condition'], 'string', 'max' => 255],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
+            [['location_id'], 'exist', 'skipOnError' => true, 'targetClass' => Area::className(), 'targetAttribute' => ['location_id' => 'id']],
         ];
     }
 
@@ -74,6 +84,24 @@ class Item extends ActiveRecord
         ];
     }
 
+    public function getItemStatus()
+    {
+        if ($this->status === 0) {
+            return 'For Sale';
+        } else {
+            return 'Sold';
+        }
+    }
+
+    public function getItemCondition()
+    {
+        if ($this->condition === 0) {
+            return 'New';
+        } else {
+            return 'Old';
+        }
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -86,7 +114,7 @@ class Item extends ActiveRecord
             'title' => 'Title',
             'description' => 'Description',
             'condition' => 'Condition',
-            'location' => 'Postcode',
+            'location_id' => 'Location',
             'image_path' => 'Image(s)',
             'price' => 'Price',
             'created_at' => 'Created At',
@@ -111,6 +139,14 @@ class Item extends ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getLocation()
+    {
+        return $this->hasOne(Area::className(), ['id' => 'location_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getUser()
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
@@ -128,7 +164,7 @@ class Item extends ActiveRecord
 
     public static function find()
     {
-        return new \app\models\ItemQuery(get_called_class());
+        return new ItemQuery(get_called_class());
     }
 
 }
