@@ -69,9 +69,8 @@ class ItemSearch extends Item
         ]);
 
         $this->load($params);
+
         if (!$this->validate()) {
-            var_dump($this->getErrors());
-            die;
             // uncomment the following line if you do not want to return any records when validation fails
 //             $query->where('0=1');
             return $dataProvider;
@@ -87,17 +86,19 @@ class ItemSearch extends Item
             'price' => $this->price,
             'status' => $this->status,
 //            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+//            'updated_at' => $this->updated_at,
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'description', $this->description]);
 
-        $this->start = date('y-m-d', strtotime($this->start) - 6 * 3600);
+        $this->start = strtotime($this->start);
         $this->end = strtotime($this->end);
-        $query->andFilterWhere(['between', 'created_at', $this->start, $this->end]);
-//            ->andFilterWhere(['<', 'created_at', $this->end]);
-            echo $query->createCommand()->getRawSql();
+
+        $query->andFilterWhere(['>=', 'created_at', $this->start])
+            ->andFilterWhere(['<', 'created_at', $this->end]);
+
+        echo $query->createCommand()->getRawSql();
 
 
 

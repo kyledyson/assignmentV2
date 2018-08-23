@@ -12,8 +12,6 @@ use kartik\daterange\DateRangePicker;
     <div class="item-search">
 
         <?php
-
-//        var_dump(strtotime('yesterday midnight'));die;
         $form = ActiveForm::begin([
             'action' => ['index'],
             'method' => 'get',
@@ -21,7 +19,6 @@ use kartik\daterange\DateRangePicker;
                 'data-pjax' => 1
             ],
         ]); ?>
-
 
         <?= $form->field($model, 'category_id')->dropDownList($categories, ['prompt' => 'Search by category']) ?>
 
@@ -31,48 +28,25 @@ use kartik\daterange\DateRangePicker;
 
         <?= $form->field($model, 'description') ?>
         <?php
-//    // DateRangePicker in a dropdown format (uneditable/hidden input) and uses the preset dropdown.
-    echo '<label class="control-label">Date Range</label>';
-    echo '<div class="drp-container">';
-    echo DateRangePicker::widget([
-        'model'=>$model,
-        'attribute' => 'created_at',
+        //    // DateRangePicker in a dropdown format (uneditable/hidden input) and uses the preset dropdown.
+        echo '<label class="control-label">Date Range</label>';
+        echo '<div class="drp-container">';
 
-        'useWithAddon'=>true,
-        'convertFormat'=>true,
-        'presetDropdown'=>true,
-        'hideInput'=>true,
-        'startAttribute' => 'start',
-        'endAttribute' => 'end',
-        'pluginOptions'=>[
-            'locale'=>['format' => 'Y-m-d'],
-        ]
-    ]);
-    echo '</div>';
-//        $addon = <<< HTML
-//<span class="input-group-addon">
-//    <i class="glyphicon glyphicon-calendar"></i>
-//</span>
-//HTML;
-//        echo '<label class="control-label">Date Range</label>';
-//        echo '<div class="input-group drp-container">';
-//        echo DateRangePicker::widget([
-//                'name'=>'date_range_1',
-//                'value'=> strtotime('yesterday midnight') . strtotime('today midnight'),
-//                'convertFormat'=>true,
-//                'useWithAddon'=>true,
-//                'pluginOptions'=>[
-//                    'locale'=>[
-//                        'format'=>'d-M-y',
-//                        'separator'=>' to ',
-//                    ],
-//                    'opens'=>'left'
-//                ]
-//            ]) . $addon;
-//        echo '</div>';
-
-    ?>
-
+        echo DateRangePicker::widget([
+            'model' => $model,
+            'attribute' => 'created_at',
+            'useWithAddon' => true,
+            'convertFormat' => true,
+            'presetDropdown' => true,
+            'hideInput' => true,
+            'startAttribute' => 'start',
+            'endAttribute' => 'end',
+            'pluginOptions' => [
+                'locale' => ['format' => 'Y-m-d H:i:s'],
+            ]
+        ]);
+        echo '</div>';
+        ?>
         <div class="form-group">
             <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
             <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>

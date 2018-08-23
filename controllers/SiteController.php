@@ -1,5 +1,7 @@
 <?php
+
 namespace app\controllers;
+
 use Yii;
 use yii\base\InvalidArgumentException;
 use yii\web\BadRequestHttpException;
@@ -11,6 +13,8 @@ use app\models\PasswordResetRequestForm;
 use app\models\ResetPasswordForm;
 use app\models\SignupForm;
 use app\models\ContactForm;
+use yii\web\UploadedFile;
+
 /**
  * Site controller
  */
@@ -46,6 +50,7 @@ class SiteController extends Controller
             ],
         ];
     }
+
     /**
      * {@inheritdoc}
      */
@@ -61,6 +66,7 @@ class SiteController extends Controller
             ],
         ];
     }
+
     /**
      * Displays homepage.
      *
@@ -70,6 +76,7 @@ class SiteController extends Controller
     {
         return $this->redirect('/item/index');
     }
+
     /**
      * Logs in a user.
      *
@@ -90,6 +97,7 @@ class SiteController extends Controller
             ]);
         }
     }
+
     /**
      * Logs out the current user.
      *
@@ -100,6 +108,7 @@ class SiteController extends Controller
         Yii::$app->user->logout();
         return $this->goHome();
     }
+
     /**
      * Displays contact page.
      *
@@ -121,6 +130,7 @@ class SiteController extends Controller
             ]);
         }
     }
+
     /**
      * Displays about page.
      *
@@ -130,6 +140,7 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
+
     /**
      * Signs user up.
      *
@@ -139,6 +150,10 @@ class SiteController extends Controller
     {
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post())) {
+            $model->image = UploadedFile::getInstance($model, 'image');
+            if ($model->image) {
+                $model->upload();
+            }
             if ($user = $model->signup()) {
                 if (Yii::$app->getUser()->login($user)) {
                     return $this->goHome();
@@ -149,6 +164,7 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
+
     /**
      * Requests password reset.
      *
@@ -169,6 +185,7 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
+
     /**
      * Resets password.
      *

@@ -16,6 +16,16 @@ class m180725_083433_create_category_table extends Migration
             'id' => $this->primaryKey(),
             'name' => $this->string(),
         ]);
+
+        $this->batchInsert('category', [ 'name'], [
+            ['Home'],
+            ['Garden'],
+            ['Electrical'],
+            ['Motors'],
+            ['Sports & Fitness'],
+            ['Clothing'],
+            ['Other'],
+        ]);
     }
 
     /**

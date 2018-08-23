@@ -1,4 +1,5 @@
 <?php
+
 namespace app\models;
 
 use yii\base\Model;
@@ -12,7 +13,8 @@ class SignupForm extends Model
     public $username;
     public $email;
     public $password;
-    public $postcode; 
+    public $postcode;
+    public $image;
     public $mobile_number;
 
 
@@ -40,9 +42,17 @@ class SignupForm extends Model
             ['postcode', 'string', 'max' => 8],
 
             ['mobile_number', 'required'],
-            ['mobile_number', 'string', 'max' => 13]
+            ['mobile_number', 'string', 'max' => 13],
+
+            [['image'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg', 'maxFiles' => 1],
 
         ];
+    }
+
+    public function upload()
+    {
+        $this->image->saveAs('uploads/profile/' . $this->image->baseName . '.' . $this->image->extension);
+        return true;
     }
 
     /**
@@ -53,17 +63,21 @@ class SignupForm extends Model
     public function signup()
     {
         if (!$this->validate()) {
+            var_dump($this->getErrors());die;
             return null;
         }
-        
+
         $user = new User();
         $user->username = $this->username;
         $user->email = $this->email;
         $user->postcode = $this->postcode;
         $user->mobile_number = $this->mobile_number;
+        if ($this->image){
+            $user->profile_picture = $this->image;
+        }
         $user->setPassword($this->password);
         $user->generateAuthKey();
-        
+
         return $user->save() ? $user : null;
     }
 }
