@@ -1,15 +1,17 @@
 <?php
 
-class ContactFormCest 
+class ItemCest
 {
     public function _before(\FunctionalTester $I)
     {
-        $I->amOnPage(['site/contact']);
+        $I->amLoggedInAs('1');
+        $I->amOnPage('/');
     }
 
-    public function openContactPage(\FunctionalTester $I)
+    public function openCreatePage(\FunctionalTester $I)
     {
-        $I->see('Contact', 'h1');        
+        $I->click('Items');
+        $I->see('Forbidden: Please login or create an account to access this page');
     }
 
     public function submitEmptyForm(\FunctionalTester $I)

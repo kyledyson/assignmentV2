@@ -9,8 +9,6 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use app\models\LoginForm;
-use app\models\PasswordResetRequestForm;
-use app\models\ResetPasswordForm;
 use app\models\SignupForm;
 use app\models\ContactForm;
 use yii\web\UploadedFile;
