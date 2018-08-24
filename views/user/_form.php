@@ -1,5 +1,6 @@
 <?php
 
+use kartik\file\FileInput;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -14,8 +15,19 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'profile_picture')->textInput(['maxlength' => true]) ?>
-
+    <?php echo $form->field($model, 'image')->widget(FileInput::classname(), [
+        'options' => [
+            'multiple' => false
+        ],
+        'pluginOptions' => [
+            'initialPreviewShowDelete' => false,
+            'initialPreview' => '/uploads/profile/' .$model->profile_picture,
+            'initialPreviewAsData' => true,
+            'overwriteInitial' => true,
+            'maxFileSize' => 2800
+        ]
+    ]);
+    ?>
     <?= $form->field($model, 'mobile_number')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'postcode')->textInput(['maxlength' => true]) ?>

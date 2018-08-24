@@ -44,17 +44,10 @@ class SignupForm extends Model
             ['mobile_number', 'required'],
             ['mobile_number', 'string', 'max' => 13],
 
-            [['image'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg', 'maxFiles' => 1],
+            [['image'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, svg', 'maxFiles' => 1],
 
         ];
     }
-
-    public function upload()
-    {
-        $this->image->saveAs('uploads/profile/' . $this->image->baseName . '.' . $this->image->extension);
-        return true;
-    }
-
     /**
      * Signs user up.
      *
@@ -63,17 +56,18 @@ class SignupForm extends Model
     public function signup()
     {
         if (!$this->validate()) {
-            var_dump($this->getErrors());die;
             return null;
         }
-
         $user = new User();
         $user->username = $this->username;
         $user->email = $this->email;
         $user->postcode = $this->postcode;
         $user->mobile_number = $this->mobile_number;
         if ($this->image){
-            $user->profile_picture = $this->image;
+            $user->image = $this->image;
+            if ($user->upload()) {
+                $user->profile_picture = $user->image->name;
+            }
         }
         $user->setPassword($this->password);
         $user->generateAuthKey();

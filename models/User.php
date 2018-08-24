@@ -4,6 +4,7 @@ use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use yii\helpers\VarDumper;
 use yii\web\IdentityInterface;
 /**
  * User model
@@ -22,7 +23,7 @@ use yii\web\IdentityInterface;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
-
+    public $image;
 
     /**
      * {@inheritdoc}
@@ -54,6 +55,12 @@ class User extends ActiveRecord implements IdentityInterface
             ['mobile_number', 'string', 'max' => 13]
 
         ];
+    }
+
+    public function upload()
+    {
+        $this->image->saveAs('uploads/profile/' . $this->image->baseName . '.' . $this->image->extension);
+        return true;
     }
     /**
      * {@inheritdoc}

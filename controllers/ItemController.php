@@ -223,15 +223,12 @@ class ItemController extends Controller
 
     public function actionYourItems()
     {
-        $searchModel = new ItemSearch();
         $dataProvider = new ActiveDataProvider([
             'query' => Item::find()->owner(),
         ]);
+
         return $this->render('index', [
-            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'categories' => $this->categories,
-            'locations' => $this->locations,
         ]);
 
     }

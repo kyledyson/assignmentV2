@@ -8,7 +8,7 @@ use kartik\daterange\DateRangePicker;
 /* @var $model app\models\SearchItem */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-<div class="div col-md-3">
+<div class="div col-md-3" style="float: left;">
     <div class="item-search">
 
         <?php
@@ -31,18 +31,17 @@ use kartik\daterange\DateRangePicker;
         //    // DateRangePicker in a dropdown format (uneditable/hidden input) and uses the preset dropdown.
         echo '<label class="control-label">Date Range</label>';
         echo '<div class="drp-container">';
-
+        echo '<div class="input-group drp-container">';
         echo DateRangePicker::widget([
             'model' => $model,
             'attribute' => 'created_at',
-            'useWithAddon' => true,
-            'convertFormat' => true,
+            'useWithAddon' => false,
             'presetDropdown' => true,
-            'hideInput' => true,
+            'convertFormat' => true,
             'startAttribute' => 'start',
             'endAttribute' => 'end',
             'pluginOptions' => [
-                'locale' => ['format' => 'Y-m-d H:i:s'],
+                'locale' => ['format' => 'Y-m-d'],
             ]
         ]);
         echo '</div>';

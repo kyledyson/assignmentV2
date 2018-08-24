@@ -6,29 +6,32 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\User */
 
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = $model->username;
+$this->params['breadcrumbs'][] = $model->username;
 ?>
 <div class="user-view">
+    <div class="row">
+        <div class="col-md-9">
+            <?= DetailView::widget([
+                'model' => $model,
+                'attributes' => [
+                    'id',
+                    'username',
+                    'email:email',
+                    'mobile_number',
+                    'postcode',
+                    'created_at:datetime',
+                ],
+            ]) ?>
+            <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+        </div>
+        <div class="col-md-3">
+            <?php
+            if ($model->profile_picture) {
+                echo Html::img('@web/uploads/profile/' . $model->profile_picture, ['style' => 'height:200px; width:200px; float: right;', 'class' => 'thumbnail float-right']);
+            }
+            ?>
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-    </p>
-
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'username',
-            'email:email',
-            'profile_picture',
-            'mobile_number',
-            'postcode',
-            'created_at:datetime',
-        ],
-    ]) ?>
-
+        </div>
+    </div>
 </div>
