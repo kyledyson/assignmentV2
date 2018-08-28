@@ -28,26 +28,25 @@ $this->params['breadcrumbs'][] = $this->title;
         }
         ?>
     </p>
-    <div class="col-sm-6 col-md-10 col-md-offset-1 thumbnail">
-        <div class="col-md-6 col-md-offset-3">
+    <div class="media" id="items-index">
+        <div class="col-md-3" style="max-height:300px; max-width:300px">
             <?php
             if ($model->images) {
                 $images = [];
                 foreach ($model->images as $image) {
-                   $img = Html::img('@web/uploads/' . $image->path, ['alt' => 'some', 'class' => 'thing']);
+                    $img = Html::img('@web/uploads/' . $image->path, ['alt' => 'some', 'class' => 'thing']);
                     array_push($images, Html::a($img, '@web/uploads/' . $image->path));
                 }
                 echo yii\bootstrap\Carousel::widget(['items' => $images]);
             }
             ?>
         </div>
-        <div class="col-md-10">
-            <div class="caption">
-                <p><?= $model->description ?></p>
-                <p>£<?= $model->price ?></p>
-                <p><?= $model->location->county ?></p>
-                </p>
-            </div>
+        <div class="media-body">
+            <p><?= $model->description ?></p>
+            <p><?= $model->itemStatus ?></p>
+            <p>Conditon: <?= $model->itemCondition ?></p>
+            <p><?= $model->location->county . ', ' . Yii::$app->formatter->format($model->created_at, 'date') ?>
+            </p>
         </div>
     </div>
 </div>

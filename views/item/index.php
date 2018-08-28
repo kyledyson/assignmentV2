@@ -15,16 +15,17 @@ $this->title = 'Items';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <?php Pjax::begin(); ?>
-<?php if(Yii::$app->controller->action->id != 'your-items') {?>
-<div class="filter_form">
-    <?= $this->render('_search', ['model' => $searchModel, 'categories' => $categories, 'locations' => $locations]); }?>
-</div>
-<div class="item-index col-md-4">
-        <?php
-        echo ListView::widget([
-            'dataProvider' => $dataProvider,
-            'itemView' => '_list_items',
-        ]);
-        ?>
+<?php if (Yii::$app->controller->action->id != 'your-items') { ?>
+    <div class="col-md-3">
+        <div class="filter_form">
+            <?= $this->render('_search', ['model' => $searchModel, 'categories' => $categories, 'locations' => $locations]); ?>
+        </div>
     </div>
+<?php } ?>
+<?php
+echo ListView::widget([
+    'dataProvider' => $dataProvider,
+    'itemView' => '_list_items',
+]);
+?>
 <?php Pjax::end(); ?>
