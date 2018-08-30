@@ -4,7 +4,7 @@ namespace tests\models;
 
 use app\models\LoginForm;
 
-class LoginFormTest extends \Codeception\Test\Unit
+class ItemTest extends \Codeception\Test\Unit
 {
     private $model;
 
@@ -13,8 +13,11 @@ class LoginFormTest extends \Codeception\Test\Unit
         \Yii::$app->user->logout();
     }
 
-    public function testLoginNoUser()
+    public function testAccessToCreatePageNoLogin()
     {
+        $I->amOnPage('/');
+
+
         $this->model = new LoginForm([
             'username' => 'not_existing_username',
             'password' => 'not_existing_password',
@@ -39,8 +42,8 @@ class LoginFormTest extends \Codeception\Test\Unit
     public function testLoginCorrect()
     {
         $this->model = new LoginForm([
-            'username' => 'test_user',
-            'password' => 'password123',
+            'username' => 'demo',
+            'password' => 'demo',
         ]);
 
         expect_that($this->model->login());

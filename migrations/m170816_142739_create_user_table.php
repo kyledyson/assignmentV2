@@ -1,5 +1,6 @@
 <?php
 
+use app\models\User;
 use yii\db\Migration;
 
 /**
@@ -26,6 +27,17 @@ class m170816_142739_create_user_table extends Migration
             'updated_at' => $this->integer()->notNull()->defaultValue(strtotime('today')),
         ]);
         $faker = Faker\Factory::create();
+
+        $user = new User([
+            'username' => 'test_user',
+            'email' => $faker->email,
+            'mobile_number' => '07983984993',
+            'postcode' => 'm278sj',
+            'password' => 'password123',
+            'auth_key' => 'ewdvhiujh3jnv'
+        ]);
+        $user->save();
+        var_dump($user->getErrors());
         for ($i = 0; $i <= 10; $i++) {
             $this->insert('user', [
                 'username' => $faker->userName,
