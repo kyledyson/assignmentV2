@@ -37,18 +37,6 @@ class m170816_142739_create_user_table extends Migration
             'auth_key' => 'ewdvhiujh3jnv'
         ]);
         $user->save();
-        var_dump($user->getErrors());
-        for ($i = 0; $i <= 10; $i++) {
-            $this->insert('user', [
-                'username' => $faker->userName,
-                'email' => $faker->email,
-                'mobile_number' => $faker->phoneNumber,
-                'postcode' => $faker->postcode,
-                'password_hash' => $faker->password,
-                'auth_key' => $faker->password
-            ]);
-        }
-
     }
 
     public function down()

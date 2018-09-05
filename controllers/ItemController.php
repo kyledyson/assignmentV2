@@ -119,8 +119,10 @@ class ItemController extends Controller
         if (Yii::$app->request->isPost) {
 
             if ($model->load(Yii::$app->request->post()) && $model->save()) {
+//                var_dump($_POST);
 
                 $image->imageFiles = UploadedFile::getInstances($image, 'imageFiles');
+//                var_dump($image->imageFiles);die;
                 if ($image->upload($model)) {
                     // file is uploaded successfully
                     return $this->redirect(['view', 'id' => $model->id]);

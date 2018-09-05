@@ -5,7 +5,7 @@ class LoginFormCest
     public function _before(\FunctionalTester $I)
     {
         Yii::$app->user->logout();
-        $I->amOnPage('site/login');
+        $I->amOnPage(['/site/login']);
     }
 
     public function openLoginPage(\FunctionalTester $I)
@@ -34,12 +34,12 @@ class LoginFormCest
 
     public function loginSuccessfully(\FunctionalTester $I)
     {
-//        $I->click('//*[@id="w1"]/li[3]/a');
-        $I->see('#login-form');
-//        $I->submitForm('#login-form', [
-//            'LoginForm[username]' => 'test_user',
-//            'LoginForm[password]' => 'password123',
-//        ]);
-//        $I->see('Logout');
+
+        $I->see('Login');
+        $I->submitForm('#login-form', [
+            'LoginForm[username]' => 'test_user',
+            'LoginForm[password]' => 'password123',
+        ]);
+        $I->see('Logout (test_user)');
     }
 }

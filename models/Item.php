@@ -52,7 +52,7 @@ class Item extends ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'description', 'condition', 'price', 'location_id'], 'required'],
+            [['title', 'description', 'condition', 'price', 'location_id', 'category_id'], 'required'],
             [['location_id', 'status', 'created_at', 'updated_at'], 'integer'],
             [['created_at'], 'safe'],
             [['description'], 'string'],
@@ -109,8 +109,8 @@ class Item extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'user_id' => 'User ID',
-            'category_id' => 'Category ID',
+            'user_id' => 'User',
+            'category_id' => 'Category',
             'title' => 'Title',
             'description' => 'Description',
             'condition' => 'Condition',

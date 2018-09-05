@@ -127,6 +127,7 @@ class SiteController extends Controller
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post())) {
             $model->image = UploadedFile::getInstance($model, 'image');
+            var_dump($model);die;
             if ($user = $model->signup()) {
                 if (Yii::$app->getUser()->login($user)) {
                     return $this->goHome();

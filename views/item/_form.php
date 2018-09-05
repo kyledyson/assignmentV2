@@ -13,7 +13,7 @@ use yii\helpers\Url;
 // var_dump($initialPreview);die;
 ?>
 <div class="item-form">
-    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
+    <?php $form = ActiveForm::begin(['id' => 'create-form', 'options' => ['enctype' => 'multipart/form-data']]); ?>
 
     <?= $form->field($model, 'category_id')->dropDownList($categories, ['prompt' => 'Please select a category']) ?>
 

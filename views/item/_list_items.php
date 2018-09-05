@@ -4,15 +4,17 @@ use yii\helpers\Html;
 use app\components\helpers\AccessHelper;
 
 ?>
-<div class="col-md-9">
+<div class="col-md-9" style="float: right">
     <div class="media" id="items-index">
         <div class="media-left">
             <?php
-            $img = Html::img('@web/uploads/' . $model->images[0]->path, [
-                'alt' => 'some', 'class' => 'thing',
-                'style' => 'max-height:175px; max-width:175px'
-            ]);
-            echo Html::a($img, ['view', 'id' => $model->id]);
+            if ($model->images) {
+                $img = Html::img('@web/uploads/' . $model->images[0]->path, [
+                    'alt' => 'some', 'class' => 'thing',
+                    'style' => 'max-height:175px; max-width:175px'
+                ]);
+                echo Html::a($img, ['view', 'id' => $model->id]);
+            }
             ?>
         </div>
         <div class="media-body">
