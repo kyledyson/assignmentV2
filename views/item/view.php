@@ -28,20 +28,23 @@ $this->params['breadcrumbs'][] = $this->title;
         }
         ?>
     </p>
-    <div class="media" id="items-index">
-        <div class="col-md-3" style="max-height:300px; max-width:300px">
-            <?php
-            if ($model->images) {
-                $images = [];
-                foreach ($model->images as $image) {
-                    $img = Html::img('@web/uploads/' . $image->path, ['alt' => 'some', 'class' => 'thing']);
-                    array_push($images, Html::a($img, '@web/uploads/' . $image->path));
-                }
-                echo yii\bootstrap\Carousel::widget(['items' => $images]);
-            }
-            ?>
-        </div>
-        <div class="media-body">
+    <?php
+    if ($model->images) {
+        echo '<div class="col-md-3" style="max-height:600px; max-width:600px">';
+        $images = [];
+        foreach ($model->images as $image) {
+            $img = Html::img('@web/uploads/' . $image->path, ['alt' => 'some', 'class' => 'thing']);
+            array_push($images, ['content' => Html::a($img, '@web/uploads/' . $image->path), 'caption' => 'Click to Zoom']);
+        }
+        echo yii\bootstrap\Carousel::widget(['items' => $images]);
+        echo '</div>';
+    }
+    ?>
+
+<!--    <div class="media" id="items-index">-->
+
+<!--        <div class="media-body">-->
+    <div class="col-md-6">
             <p>£<?= $model->price?></p>
             <p><?= $model->description ?></p>
             <p><?= $model->itemStatus ?></p>
@@ -49,5 +52,6 @@ $this->params['breadcrumbs'][] = $this->title;
             <p><?= $model->location->county . ', ' . Yii::$app->formatter->format($model->created_at, 'date') ?>
             </p>
         </div>
-    </div>
 </div>
+<!--    </div>-->
+<!--</div>-->
