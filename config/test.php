@@ -15,14 +15,17 @@ return [
     'language' => 'en-US',
     'components' => [
         'db' => $db,
+        'urlManager' => [
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+            'rules' => [
+            ],
+        ],
         'mailer' => [
             'useFileTransport' => true,
         ],
         'assetManager' => [
             'basePath' => __DIR__ . '/../web/assets',
-        ],
-        'urlManager' => [
-            'showScriptName' => true,
         ],
         'user' => [
             'identityClass' => 'app\models\User',

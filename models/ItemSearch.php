@@ -87,6 +87,7 @@ class ItemSearch extends Item
         $query->andFilterWhere([
             'id' => $this->id,
             'user_id' => $this->user_id,
+
             'category_id' => $this->category_id,
             'location_id' => $this->location_id,
             'condition' => $this->condition,

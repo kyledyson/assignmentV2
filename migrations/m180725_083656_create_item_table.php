@@ -81,6 +81,7 @@ class m180725_083656_create_item_table extends Migration
             'id',
             'CASCADE'
         );
+
     }
 
     /**

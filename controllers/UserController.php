@@ -56,17 +56,17 @@ class UserController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
             $model->image = UploadedFile::getInstance($model, 'image');
-            if ($model->upload()){
+            if ($model->image) {
+                $model->upload();
                 $model->profile_picture = $model->image->name;
-                if ($model->save())
+            }
+            if ($model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
 
         }
 
-        return $this->render('update', [
-            'model' => $model,
-        ]);
+        return $this->render('update', ['model' => $model,]);
     }
 
     /**
@@ -76,7 +76,8 @@ class UserController extends Controller
      * @return User the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    protected
+    function findModel($id)
     {
         if (($model = User::findOne($id)) !== null) {
             return $model;

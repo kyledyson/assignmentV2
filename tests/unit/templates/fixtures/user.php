@@ -11,5 +11,5 @@ return [
     'email' => $faker->unique()->email,
     'mobile_number' => $faker->regexify($regex = '[0-9]{11}'),
     'postcode' => $faker->postcode,
-    'password_hash' => $faker->password
+    'password' => 'password123'
 ];

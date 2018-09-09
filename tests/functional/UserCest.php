@@ -3,22 +3,34 @@
 use app\models\Image;
 use yii\web\UploadedFile;
 
-class ItemCest
+class UserCest
 {
     public function _before(\FunctionalTester $I)
     {
         $I->amOnPage('/');
     }
 
-    public function openCreatePageAsGuest(\FunctionalTester $I)
+    public function updateUserDetails(\FunctionalTester $I)
     {
+        $I->click('Login');
 
-        $I->amOnRoute('/item/create');
-        $I->expectTo('see error');
-        $I->see('Forbidden: Please login or create an account to access this page');
+        $I->submitForm('#login-form', [
+            'LoginForm[username]' => 'test_user0',
+            'LoginForm[password]' => 'password123'
+        ]);
+
+        $I->click('Profile');
+        $I->see('Update');
+        $I->click('Update');
+
+        $I->submitForm('#user-update', [
+            'User[mobile_number]' => '01611234567',
+            'User[postcode]' => 'm27 8up'
+        ]);
+
     }
 
-    public function createItemWithEmptyData(\FunctionalTester $I)
+    public function postEmptyItem(\FunctionalTester $I)
     {
         $I->amLoggedInAs('1');
         $I->amOnRoute('/item/create');
@@ -40,7 +52,7 @@ class ItemCest
         $I->see('Price cannot be blank.');
     }
 
-    public function createItemWithNoImage(\FunctionalTester $I)
+    public function postItemWithNoImage(\FunctionalTester $I)
     {
         $I->amLoggedInAs('1');
         $I->amOnRoute('/item/create');
@@ -58,10 +70,11 @@ class ItemCest
         $I->amOnRoute('view');
     }
 
-    public function createItemWithImage(\FunctionalTester $I)
+    public function postItemWithImage(\FunctionalTester $I)
     {
         $I->amLoggedInAs('1');
         $I->amOnRoute('/item/create');
+        $image = new Image();
 
         $I->see('Create Item');
         $I->submitForm('#create-form', [
@@ -78,7 +91,7 @@ class ItemCest
         $I->amOnRoute('view');
     }
 
-    public function updateAnItem(\FunctionalTester $I)
+    public function userCanUpdateItem(\FunctionalTester $I)
     {
         $I->amLoggedInAs('1');
         $I->amOnRoute('/item/create');
@@ -109,7 +122,7 @@ class ItemCest
         $I->see('New Description');
     }
 
-    public function deleteAnItem(\FunctionalTester $I)
+    public function userCanDeleteItem(\FunctionalTester $I)
     {
         $I->amLoggedInAs('1');
         $I->amOnRoute('/item/create');

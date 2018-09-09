@@ -24,8 +24,11 @@ use yii\helpers\Url;
     <?= $form->field($model, 'condition')->dropDownList([0 => 'New', 1 => 'Old'], ['prompt' => 'Please select a condition']) ?>
 
     <?= $form->field($model, 'location_id')->dropDownList($locations, ['prompt' => 'Please select a location']) ?>
-
-    <?= $form->field($model, 'price')->textInput() ?>
+    <div class="input-group input-group-sm">
+        <span class="input-group-addon" id="sizing-addon3">@</span>
+        <?= $form->field($model, 'price')->textInput(['aria-describedby' => 'sizing-addon3']) ?>
+        <input type="text" class="form-control" placeholder="Username" aria-describedby="sizing-addon3">
+    </div>
     <?php
     // if action is create display empty file input
     if (Yii::$app->controller->action->id === 'create') {

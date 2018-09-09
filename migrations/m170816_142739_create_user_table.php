@@ -27,16 +27,19 @@ class m170816_142739_create_user_table extends Migration
             'updated_at' => $this->integer()->notNull()->defaultValue(strtotime('today')),
         ]);
         $faker = Faker\Factory::create();
+        // create 5 users for testing
+        for ($i = 0; $i < 5; $i++) {
+            $user = new User([
+                'username' => 'test_user' . $i,
+                'email' => $faker->email,
+                'mobile_number' => '07983984993',
+                'postcode' => 'm278sj',
+                'password' => 'password123',
+                'auth_key' => 'ewdvhiujh3jnv'
+            ]);
+            $user->save();
+        }
 
-        $user = new User([
-            'username' => 'test_user',
-            'email' => $faker->email,
-            'mobile_number' => '07983984993',
-            'postcode' => 'm278sj',
-            'password' => 'password123',
-            'auth_key' => 'ewdvhiujh3jnv'
-        ]);
-        $user->save();
     }
 
     public function down()

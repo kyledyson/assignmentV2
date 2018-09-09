@@ -34,12 +34,13 @@ class LoginFormCest
 
     public function loginSuccessfully(\FunctionalTester $I)
     {
-
         $I->see('Login');
         $I->submitForm('#login-form', [
-            'LoginForm[username]' => 'test_user',
+            'LoginForm[username]' => 'test_user0',
             'LoginForm[password]' => 'password123',
         ]);
-        $I->see('Logout (test_user)');
+        $I->expectTo('Be logged in');
+
+        $I->see('Logout (test_user0)');
     }
 }

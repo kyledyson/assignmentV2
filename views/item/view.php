@@ -42,6 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ?>
         </div>
         <div class="media-body">
+            <p>£<?= $model->price?></p>
             <p><?= $model->description ?></p>
             <p><?= $model->itemStatus ?></p>
             <p>Conditon: <?= $model->itemCondition ?></p>
