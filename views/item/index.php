@@ -15,6 +15,7 @@ $this->title = 'Items';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <?php Pjax::begin(); ?>
+<div style="float: left">
 <?php if (Yii::$app->controller->action->id != 'your-items') { ?>
     <div class="col-md-3">
         <div class="filter_form">
@@ -28,4 +29,5 @@ echo ListView::widget([
     'itemView' => '_list_items',
 ]);
 ?>
+</div>
 <?php Pjax::end(); ?>

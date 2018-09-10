@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\components\helpers\AccessHelper;
 use Yii;
 use app\models\User;
 use yii\data\ActiveDataProvider;
@@ -38,6 +39,10 @@ class UserController extends Controller
      */
     public function actionView($id)
     {
+        // checks if the current user is owner of item
+        if (AccessHelper::hasAccess(null, $id)) {
+            throw new \yii\web\HttpException(403, 'You do not have access to this post');
+        }
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -52,8 +57,12 @@ class UserController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
 
+        $model = $this->findModel($id);
+        // checks if the current user is owner of item
+        if (AccessHelper::hasAccess($model)) {
+            throw new \yii\web\HttpException(403, 'You do not have access to this resource.');
+        }
         if ($model->load(Yii::$app->request->post())) {
             $model->image = UploadedFile::getInstance($model, 'image');
             if ($model->image) {

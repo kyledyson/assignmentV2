@@ -11,8 +11,9 @@ class AccessHelper
         return Yii::$app->user->id !== $item->user_id;
     }
 
-    public static function hasAccessToComment($comment)
+    public static function hasAccess($user = null,$id = null)
     {
-        return Yii::$app->user->id != $comment->user_id;
+        $user_id  = isset($user->id) ?: $id;
+        return Yii::$app->user->id != $user_id;
     }
 }
