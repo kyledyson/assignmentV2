@@ -85,12 +85,13 @@ class ItemController extends Controller
     {
         $searchModel = new ItemSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+        $sort = $dataProvider->getSort();
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'categories' => $this->categories,
             'locations' => $this->locations,
+            'sort' => $sort
         ]);
     }
 
@@ -122,8 +123,14 @@ class ItemController extends Controller
 //                var_dump($_POST);
 
                 $image->imageFiles = UploadedFile::getInstances($image, 'imageFiles');
+//                var_dump($image->validators);die;
+                if (!$image->imageFiles){
+                    $model->addError('imageFiles', 'Please add at least 1 image.');
+                    $image->validate();
+                }
 //                var_dump($image->imageFiles);die;
                 if ($image->upload($model)) {
+
                     // file is uploaded successfully
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
@@ -225,14 +232,21 @@ class ItemController extends Controller
 
     public function actionYourItems()
     {
+        $searchModel = new ItemSearch();
+
         $dataProvider = new ActiveDataProvider([
             'query' => Item::find()->owner(),
         ]);
 
-        return $this->render('index', [
-            'dataProvider' => $dataProvider,
-        ]);
+        $sort = $dataProvider->getSort();
 
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'categories' => $this->categories,
+            'locations' => $this->locations,
+            'sort' => $sort
+        ]);
     }
 
     /**

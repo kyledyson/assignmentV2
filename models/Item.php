@@ -36,7 +36,6 @@ class Item extends ActiveRecord
 
     const STATUS_NEW = 0;
     const STATUS_OLD = 1;
-
     /**
      * {@inheritdoc}
      */

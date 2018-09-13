@@ -20,6 +20,7 @@ use app\components\helpers\AccessHelper;
         <div class="media-body">
             <div style="float: right">
                 <?php
+
                 if (!AccessHelper::hasAccessToPost($model)) {
                     echo Html::a('<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>', ['update', 'id' => $model->id], ['class' => 'btn btn-default']);
                 }

@@ -30,7 +30,7 @@ class Image extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['path'], 'required'],
+            [['path', 'imageFiles'], 'required'],
             [['path'], 'string', 'max' => 255],
             [['imageFiles'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg', 'maxFiles' => 4],
         ];
@@ -39,14 +39,18 @@ class Image extends \yii\db\ActiveRecord
     public function upload($model)
     {
        $image = new Image();
-       foreach ($this->imageFiles as $file) {
-            $image->path = $file->baseName . '.' . $file->extension;
-            $model->link('images', $image);
-            $image->save();
-            $file->saveAs('uploads/' . $file->baseName . '.' . $file->extension);
-            $image = new Image();
-        } 
-        return true;
+       if ($this->validate()) {
+           foreach ($this->imageFiles as $file) {
+               $image->path = $file->baseName . '.' . $file->extension;
+               $model->link('images', $image);
+               $image->save();
+               $file->saveAs('uploads/' . $file->baseName . '.' . $file->extension);
+               $image = new Image();
+           }
+           return true;
+       }else{
+           return false;
+       }
     }
 
     /**

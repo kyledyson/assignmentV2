@@ -13,25 +13,23 @@ use yii\helpers\Url;
 // var_dump($initialPreview);die;
 ?>
 <div class="container" style="max-width: 75%; float:left">
-<div class="item-form">
-    <div class="row">
-    <?php $form = ActiveForm::begin(['id' => 'create-form', 'options' => ['enctype' => 'multipart/form-data']]); ?>
-        <div class="col-lg-6">
-            <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="col-lg-6">
-            <?= $form->field($model, 'category_id')->dropDownList($categories, ['prompt' => 'Please select a category']) ?>
-        </div>
-        <div class="col-lg-6">
-            <?= $form->field($model, 'condition')->dropDownList([0 => 'New', 1 => 'Old'], ['prompt' => 'Please select a condition']) ?>
-        </div>
-        <?php
-        if (Yii::$app->controller->action->id == 'update') { ?>
+    <div class="item-form">
+        <div class="row">
+            <?php $form = ActiveForm::begin(['id' => 'create-form', 'options' => ['enctype' => 'multipart/form-data']]); ?>
             <div class="col-lg-6">
-                <?= $form->field($model, 'status')->dropDownList([0 => 'For Sale', 1 => 'Sold']); ?>
+                <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
             </div>
-
+            <div class="col-lg-6">
+                <?= $form->field($model, 'category_id')->dropDownList($categories, ['prompt' => 'Please select a category']) ?>
+            </div>
+            <div class="col-lg-6">
+                <?= $form->field($model, 'condition')->dropDownList([0 => 'New', 1 => 'Old'], ['prompt' => 'Please select a condition']) ?>
+            </div>
             <?php
+            if (Yii::$app->controller->action->id == 'update') {
+            echo $form->field($model, 'status')->radioList([0 => 'For Sale', 1 => 'Mark As Sold']);
+            ?>
+        <?php
         }
         ?>
         <div class="col-lg-12">
@@ -74,14 +72,14 @@ use yii\helpers\Url;
             }
             ?>
         </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6">
+        <div class="form-group">
+            <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
         </div>
     </div>
-    <div class="row">
-        <div class="col-lg-6">
-            <div class="form-group">
-                <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
-            </div>
-        </div>
-        <?php ActiveForm::end(); ?>
+    <?php ActiveForm::end(); ?>
 
-    </div>
+</div>
