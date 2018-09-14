@@ -125,8 +125,8 @@ class ItemController extends Controller
                 $image->imageFiles = UploadedFile::getInstances($image, 'imageFiles');
 //                var_dump($image->validators);die;
                 if (!$image->imageFiles){
-                    $model->addError('imageFiles', 'Please add at least 1 image.');
-                    $image->validate();
+                    \Yii::$app->getSession()->setFlash('danger', 'Please add at least one image');
+
                 }
 //                var_dump($image->imageFiles);die;
                 if ($image->upload($model)) {

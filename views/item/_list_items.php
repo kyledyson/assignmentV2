@@ -29,6 +29,7 @@ use app\components\helpers\AccessHelper;
             <h4 class="media-heading">  <?= Html::a($model->title, ['view', 'id' => $model->id]); ?>
             </h4>
 
+            <p>£<?= $model->price ?></p>
             <p><?= $model->description ?></p>
             <p><?= $model->itemStatus ?></p>
             <p>Conditon: <?= $model->itemCondition ?></p>

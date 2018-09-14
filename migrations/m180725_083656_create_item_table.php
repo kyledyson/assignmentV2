@@ -1,5 +1,6 @@
 <?php
 
+use app\models\Item;
 use yii\db\Migration;
 
 /**
@@ -81,6 +82,23 @@ class m180725_083656_create_item_table extends Migration
             'id',
             'CASCADE'
         );
+
+        $faker = Faker\Factory::create();
+        // create 5 users for testing
+        for ($i = 0; $i < 10; $i++) {
+            $this->insert('item',
+                [
+                    'title' => $faker->word,
+                    'location_id' => $faker->numberBetween(1, 87),
+                    'category_id' => $faker->numberBetween(1, 7),
+                    'user_id' => $faker->numberBetween(1, 5),
+                    'description'  => $faker->sentence,
+                    'condition' => $faker->randomElement(['New', 'Old']),
+                    'status' => $faker->numberBetween(0,1),
+                    'price' => $faker->numberBetween(10, 200),
+                    'created_at' => time(),
+                ]);
+        }
 
     }
 

@@ -52,7 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <p><?= $model->location->county . ', ' . Yii::$app->formatter->format($model->created_at, 'date') ?>
             </p>
         <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-            Contact Owner
+            Contact Info
         </button>
         <!-- Modal -->
         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -60,10 +60,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                        <h4 class="modal-title" id="myModalLabel">Contact Info</h4>
                     </div>
                     <div class="modal-body">
-                        ...
+                        <?php
+                            echo "Email: ". $model->user->email ."<br>";
+                            echo "Tel: " .$model->user->mobile_number;
+                        ?>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
